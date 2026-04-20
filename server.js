@@ -14,14 +14,7 @@ const PORT = process.env.PORT || 3001;
 
 // Security Middleware
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-      "script-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      "font-src": ["'self'", "https://fonts.gstatic.com"],
-    },
-  },
+  contentSecurityPolicy: false,
 }));
 
 const limiter = rateLimit({
