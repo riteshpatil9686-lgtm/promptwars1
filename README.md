@@ -1,3 +1,5 @@
+Live Link: https://smart-venue-364397114547.us-central1.run.app/
+
 # 🏟️ Smart Venue App
 
 A sophisticated, full-stack web application designed to improve the event experience at large-scale sporting venues through real-time crowd density monitoring, concession wait times, and mobile ordering.
