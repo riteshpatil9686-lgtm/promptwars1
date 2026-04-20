@@ -40,10 +40,20 @@ function HomeScreen({ onSelectStand, onViewOrder, activeOrderId }) {
           🪑 Section {SEAT.section} · Row {SEAT.row} · Seat {SEAT.number}
         </div>
         <div className="a-venue-name">MetroLife Arena</div>
-        <div className="a-game-info">Chicago Fire vs FC Dallas · Q3 · 58:22</div>
-        <div className="a-live-row">
-          <span className="live-dot" />
-          <span className="a-live-label">Live updates</span>
+        <div className="a-game-info">
+          Chicago Fire vs FC Dallas · Q3 · 58:22
+          <a 
+            href="https://www.google.com/maps/search/?api=1&query=Soldier+Field+Chicago" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ marginLeft: 12, fontSize: '0.7rem', textDecoration: 'underline', color: 'var(--accent-primary)' }}
+          >
+            📍 Maps
+          </a>
+        </div>
+        <div className="a-live-row" aria-live="polite">
+          <span className="live-dot" aria-hidden="true" />
+          <span className="a-live-label">Live updates active</span>
           {connectionStatus !== 'connected' && (
             <span style={{ fontSize: '0.72rem', color: 'var(--status-elevated)', marginLeft: 8 }}>
               {connectionStatus === 'connecting' ? '⟳ Syncing…' : '⚠ Offline'}
@@ -110,7 +120,13 @@ function HomeScreen({ onSelectStand, onViewOrder, activeOrderId }) {
 const StandCard = React.memo(function StandCard({ stand, onClick, isNearest }) {
   const level = stand.isOpen ? getWaitLevel(stand.waitSeconds) : 'closed';
   return (
-    <div className={`stand-card ${level} ${!stand.isOpen ? 'closed' : ''}`} onClick={onClick} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined}>
+    <div 
+      className={`stand-card ${level} ${!stand.isOpen ? 'closed' : ''}`} 
+      onClick={onClick} 
+      role={onClick ? 'button' : 'article'} 
+      aria-label={`${stand.name}, ${stand.isOpen ? formatWaitTime(stand.waitSeconds) + ' wait' : 'Closed'}`}
+      tabIndex={onClick ? 0 : undefined}
+    >
       <span className="stand-icon">{stand.icon || '🍔'}</span>
       <div className="stand-info">
         <div className="stand-name">
