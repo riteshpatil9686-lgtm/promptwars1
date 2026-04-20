@@ -20,7 +20,7 @@ function getZoneColor(level) {
 // ================================================================
 // VENUE SVG HEATMAP
 // ================================================================
-function VenueHeatmap({ zones }) {
+const VenueHeatmap = React.memo(function VenueHeatmap({ zones }) {
   const zoneMap = {};
   zones.forEach(z => { zoneMap[z.id] = z; });
 
@@ -92,12 +92,12 @@ function VenueHeatmap({ zones }) {
       </svg>
     </div>
   );
-}
+});
 
 // ================================================================
 // ZONE CAPACITY BARS
 // ================================================================
-function ZoneBars({ zones }) {
+const ZoneBars = React.memo(function ZoneBars({ zones }) {
   if (!zones.length) return <SkeletonCard rows={3} />;
   const sorted = [...zones].sort((a, b) => (b.capacityPct ?? 0) - (a.capacityPct ?? 0));
   return (
@@ -124,7 +124,7 @@ function ZoneBars({ zones }) {
       })}
     </div>
   );
-}
+});
 
 // ================================================================
 // ALERT FEED

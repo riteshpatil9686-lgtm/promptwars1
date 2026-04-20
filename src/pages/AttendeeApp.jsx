@@ -17,19 +17,21 @@ function HomeScreen({ onSelectStand, onViewOrder, activeOrderId }) {
 
   const nearestZone = getNearestZone(SEAT.section);
 
-  const sortedStands = [...stands].sort((a, b) => {
-    if (sortBy === 'wait') {
-      if (a.isOpen !== b.isOpen) return b.isOpen - a.isOpen;
-      return a.waitSeconds - b.waitSeconds;
-    }
-    if (sortBy === 'nearest') {
-      const aNear = a.zoneId === nearestZone ? 0 : 1;
-      const bNear = b.zoneId === nearestZone ? 0 : 1;
-      if (aNear !== bNear) return aNear - bNear;
-      return a.waitSeconds - b.waitSeconds;
-    }
-    return a.name.localeCompare(b.name);
-  });
+  const sortedStands = React.useMemo(() => {
+    return [...stands].sort((a, b) => {
+      if (sortBy === 'wait') {
+        if (a.isOpen !== b.isOpen) return b.isOpen - a.isOpen;
+        return a.waitSeconds - b.waitSeconds;
+      }
+      if (sortBy === 'nearest') {
+        const aNear = a.zoneId === nearestZone ? 0 : 1;
+        const bNear = b.zoneId === nearestZone ? 0 : 1;
+        if (aNear !== bNear) return aNear - bNear;
+        return a.waitSeconds - b.waitSeconds;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  }, [stands, sortBy, nearestZone]);
 
   return (
     <>
@@ -105,7 +107,7 @@ function HomeScreen({ onSelectStand, onViewOrder, activeOrderId }) {
   );
 }
 
-function StandCard({ stand, onClick, isNearest }) {
+const StandCard = React.memo(function StandCard({ stand, onClick, isNearest }) {
   const level = stand.isOpen ? getWaitLevel(stand.waitSeconds) : 'closed';
   return (
     <div className={`stand-card ${level} ${!stand.isOpen ? 'closed' : ''}`} onClick={onClick} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined}>
@@ -130,7 +132,7 @@ function StandCard({ stand, onClick, isNearest }) {
       {stand.isOpen && <span style={{ color: 'var(--text-muted)', fontSize: '1rem', marginLeft: 2 }}>›</span>}
     </div>
   );
-}
+});
 
 // ================================================================
 // STAND DETAIL — Menu + Add to cart
